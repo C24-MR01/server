@@ -1,13 +1,18 @@
 const {db} = require('../db');
 const express = require('express');
 const app = express();
-
+const authRoute = require('./routes/authRoute');
+const { authMiddleware } = require('./middleware/auth');
 require('dotenv').config({ path: '.env' });
 
-app.get('/', async (req, res) => {
-  const querySnapshot = await db.collection('users').get();
-  const users = querySnapshot.docs.map(doc => doc.data());
-  res.json(users);
+app.use(express.json());
+
+app.use('/api/v1', authRoute);
+
+// tes middleware
+app.use('/api/v1/user', authMiddleware, (req, res) => {
+  res.json({ message: 'login' ,
+  user: req.user});
 });
 
 app.set('port', process.env.PORT || 8888);
