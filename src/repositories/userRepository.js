@@ -1,5 +1,6 @@
 const {db} = require('../../db');
 const User = require('../models/user');
+const { FieldValue } = require('firebase-admin/firestore');
 
 class UserRepository{
     async findByEmail(email){
@@ -12,7 +13,20 @@ class UserRepository{
     async create(user){
         const docRef = await db.collection('users').doc(user.id);
         await docRef.set(user);
+    }
 
+    async addLike(userId, movieId) {
+        const userRef = await db.collection('users').doc(userId);
+        await userRef.update({
+            likes: FieldValue.arrayUnion(movieId)
+        });
+    }
+
+    async removeLike(userId, movieId) {
+        const userRef = await db.collection('users').doc(userId);
+        await userRef.update({
+            likes: FieldValue.arrayRemove(movieId)
+        });
     }
 }
 

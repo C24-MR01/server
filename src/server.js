@@ -1,13 +1,18 @@
 const {db} = require('../db');
+require('dotenv').config({ path: '.env' });
+
 const express = require('express');
 const app = express();
+
 const authRoute = require('./routes/authRoute');
+const movieRoute = require('./routes/movieRoute');
+
 const { authMiddleware } = require('./middleware/auth');
-require('dotenv').config({ path: '.env' });
 
 app.use(express.json());
 
 app.use('/api/v1', authRoute);
+app.use('/api/v1/movie', authMiddleware, movieRoute);
 
 // tes middleware
 app.use('/api/v1/user', authMiddleware, (req, res) => {

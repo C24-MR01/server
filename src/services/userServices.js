@@ -18,6 +18,7 @@ class UserService{
             id,
             email,
             password: hashedPassword,
+            likes: [],
             createdAt: Date.now(),
             updatedAt: Date.now()
         };
@@ -33,7 +34,7 @@ class UserService{
         if(!isValidPassword){
             throw new Error('Invalid password');
         }
-        const token = jwt.sign({email: user[0].email}, process.env.JWT_SECRET, {expiresIn: '15s'});
+        const token = jwt.sign({email: user[0].email}, process.env.JWT_SECRET, {expiresIn: '2h'});
         console.log(token);
         return token;
     }
