@@ -10,6 +10,12 @@ class UserRepository{
         return user;
     }
 
+    async findbyUsername(username){
+        const querySnapshot = await db.collection('users').where('username','==',username).get();
+        const user = querySnapshot.docs.map(doc => doc.data());
+        return user;
+    }
+
     async create(user){
         const docRef = await db.collection('users').doc(user.id);
         await docRef.set(user);
