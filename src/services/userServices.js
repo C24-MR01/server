@@ -6,10 +6,15 @@ const { nanoid } = require('nanoid');
 require('dotenv').config({ path: '.env' });
 
 class UserService{
-    async register(email, password){
-        const user = await userRepository.findByEmail(email);
+    async register(username, email, password){
+        let user = await userRepository.findByEmail(email);
         if(user.length > 0){
             throw new Error('User already exists');
+        }
+
+        user = await userRepository.findbyUsername(username);
+        if(user.length > 0){
+            throw new Error('User has already taken');
         }
 
         const hashedPassword = await bycrpt.hash(password, 10);
@@ -18,7 +23,9 @@ class UserService{
             id,
             email,
             password: hashedPassword,
+            username,
             likes: [],
+            following: [],
             createdAt: Date.now(),
             updatedAt: Date.now()
         };

@@ -1,12 +1,9 @@
 const UserService = require('../services/userServices');
-const userRepository = require('../repositories/userRepository')
-
 
 const register = async (req, res) => {
     try{
-        const {email, password} = req.body;
-        console.log(email, password);
-        const user = await UserService.register(email, password);
+        const {username, email, password} = req.body;
+        await UserService.register(username, email, password);
         res.json({
             status: 201,
             message : "account created"
