@@ -16,6 +16,12 @@ class UserRepository{
         return user;
     }
 
+    async finbyUserId(userId){
+        const userRef = await db.collection('users').where('id','==',userId).get();
+        const user = userRef.docs.map(doc => doc.data());
+        return user;
+    }
+
     async create(user){
         const docRef = await db.collection('users').doc(user.id);
         await docRef.set(user);
@@ -32,6 +38,21 @@ class UserRepository{
         const userRef = await db.collection('users').doc(userId);
         await userRef.update({
             likes: FieldValue.arrayRemove(movieId)
+        });
+    }
+
+
+    async addFriend(currentUserId, userId){
+        const userRef = await db.collection('users').doc(currentUserId);
+        await userRef.update({
+            following: FieldValue.arrayUnion(userId)
+        });
+    }
+
+    async removeFriend(currentUserId, userId){
+        const userRef = await db.collection('users').doc(currentUserId);
+        await userRef.update({
+            following: FieldValue.arrayRemove(userId)
         });
     }
 }

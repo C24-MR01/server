@@ -45,6 +45,29 @@ class UserService{
         console.log(token);
         return token;
     }
+
+    async addFriend(currentUserId, userId){
+        userRepository.addFriend(currentUserId, userId);
+    }
+
+    async removeFriend(currentUserId, userId){
+        userRepository.removeFriend(currentUserId, userId);
+    }
+
+    async getUser(userId){
+        const user = await userRepository.finbyUserId(userId);
+        if(user.length === 0){
+            throw new Error('User not found');
+        }
+        const filteredUser = {
+            id: user[0].id,
+            username: user[0].username,
+            likes: user[0].likes,
+            following: user[0].following
+        };
+
+        return filteredUser;
+    }
 }
 
 module.exports = new UserService();
