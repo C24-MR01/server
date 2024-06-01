@@ -1,3 +1,4 @@
+const {Timestamp} = require('firebase-admin/firestore');
 const bycrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository')
@@ -6,7 +7,7 @@ const { nanoid } = require('nanoid');
 require('dotenv').config({ path: '.env' });
 
 class UserService{
-    async register(username, email, password){
+    async register(username, email, password, name, birth, gender){
         let user = await userRepository.findByEmail(email);
         if(user.length > 0){
             throw new Error('User already exists');
@@ -19,11 +20,17 @@ class UserService{
 
         const hashedPassword = await bycrpt.hash(password, 10);
         const id = nanoid(10);
+        const birthDateTimestamp = Timestamp.fromDate(new Date(birth));
+        age = calculateAge(birthDateTimestamp);
         const userToCreate = {
             id,
             email,
             password: hashedPassword,
             username,
+            name,
+            birthDateTimestamp,
+            age,
+            gender,
             likes: [],
             following: [],
             createdAt: Date.now(),
@@ -68,6 +75,17 @@ class UserService{
 
         return filteredUser;
     }
+}
+
+const calculateAge = ( birthdate ) => {
+    const birth = new Date(birthdate);
+    const today = new Date();
+    const age = today.getFullYear() - birth.getFullYear();
+    const month = today.getMonth() - birth.getMonth();
+    if(month < 0 || (month === 0 && today.getDate() < birth.getDate())){
+        age--;
+    }
+    return age;
 }
 
 module.exports = new UserService();
