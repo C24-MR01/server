@@ -1,4 +1,3 @@
-const {Timestamp} = require('firebase/firestore');
 const bycrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository')
@@ -26,13 +25,13 @@ class UserService{
             password: hashedPassword,
             username,
             name,
-            birth,
+            birthdate : new Date(birth),
             age:0,
             gender,
             likes: [],
             following: [],
-            createdAt: Date.now(),
-            updatedAt: Date.now()
+            createdAt: new Date(Date.now()),
+            updatedAt: new Date(Date.now())
         };
         await userRepository.create(userToCreate);
     }
