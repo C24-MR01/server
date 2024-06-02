@@ -1,4 +1,4 @@
-const {Timestamp} = require('firebase-admin/firestore');
+const {Timestamp} = require('firebase/firestore');
 const bycrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository')
@@ -20,16 +20,14 @@ class UserService{
 
         const hashedPassword = await bycrpt.hash(password, 10);
         const id = nanoid(10);
-        const birthDateTimestamp = Timestamp.fromDate(new Date(birth));
-        age = calculateAge(birthDateTimestamp);
         const userToCreate = {
             id,
             email,
             password: hashedPassword,
             username,
             name,
-            birthDateTimestamp,
-            age,
+            birth,
+            age:0,
             gender,
             likes: [],
             following: [],
@@ -77,15 +75,5 @@ class UserService{
     }
 }
 
-const calculateAge = ( birthdate ) => {
-    const birth = new Date(birthdate);
-    const today = new Date();
-    const age = today.getFullYear() - birth.getFullYear();
-    const month = today.getMonth() - birth.getMonth();
-    if(month < 0 || (month === 0 && today.getDate() < birth.getDate())){
-        age--;
-    }
-    return age;
-}
 
 module.exports = new UserService();
