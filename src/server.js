@@ -23,7 +23,7 @@ app.use('/api/v1/user', authMiddleware, userRoute);
 //   user: req.user});
 // });
 
-app.set('port', process.env.PORT || 8888);
+app.set('port', process.env.PORT || 3000);
 const server = app.listen(app.get('port'), () => {
     console.log(`Server is running on port ${server.address().port}`);
   });
