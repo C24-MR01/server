@@ -7,16 +7,20 @@ require('dotenv').config({ path: '.env' });
 
 class UserService{
     async register(username, email, password, name, birth, gender){
+        if(!isValidEmail(email)){
+            throw new Error('Invalid email address');
+        }
         let user = await userRepository.findByEmail(email);
         if(user.length > 0){
-            throw new Error('User already exists');
+            throw new Error('Email already exists');
         }
 
         user = await userRepository.findbyUsername(username);
         if(user.length > 0){
             throw new Error('User has already taken');
         }
-
+        const birthdate = new Date(birth);
+        const age = calculateAge(birthdate, new Date(Date.now()));
         const hashedPassword = await bycrpt.hash(password, 10);
         const id = nanoid(10);
         const userToCreate = {
@@ -25,8 +29,8 @@ class UserService{
             password: hashedPassword,
             username,
             name,
-            birthdate : new Date(birth),
-            age:0,
+            birthdate,
+            age,
             gender,
             likes: [],
             following: [],
@@ -74,5 +78,19 @@ class UserService{
     }
 }
 
+function isValidEmail(email){
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email);
+}
+
+function calculateAge(date, today){
+    const age = today.getFullYear() - date.getFullYear();
+    const monthDiff = today.getMonth() - date.getMonth();
+    console.log(age, monthDiff);
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+        return age - 1;
+    }
+    return age;
+}
 
 module.exports = new UserService();
