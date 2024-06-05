@@ -2,7 +2,8 @@ const bycrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository')
 const { nanoid } = require('nanoid');   
-
+const { isValidEmail } = require('../utils/validation');
+const { calculateAge } = require('../utils/ageCalculation');
 require('dotenv').config({ path: '.env' });
 
 class UserService{
@@ -76,21 +77,6 @@ class UserService{
 
         return filteredUser;
     }
-}
-
-function isValidEmail(email){
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email);
-}
-
-function calculateAge(date, today){
-    const age = today.getFullYear() - date.getFullYear();
-    const monthDiff = today.getMonth() - date.getMonth();
-    console.log(age, monthDiff);
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
-        return age - 1;
-    }
-    return age;
 }
 
 module.exports = new UserService();
