@@ -47,11 +47,11 @@ jobs:
         gcloud secrets versions access latest --secret=firebase-service-account-key > key/serviceAccountKey.json
     
     - name: Deploy to Cloud Run
-      uses: google-github-actions/deploy-cloudrun@v2
-      with:
-        image: asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
-        service: ${{ env.IMAGE_NAME }}
-        region: ${{ env.REGION }}
-        env_vars: |-
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
-          MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
+      run: |
+        gcloud run deploy c24-mr01-server \
+          --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest \
+          --platform managed \
+          --region asia-southeast2 \
+          --allow-unauthenticated \
+          --set-env-vars JWT_SECRET=${{ secrets.JWT_SECRET }} \
+          --set-env-vars MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
