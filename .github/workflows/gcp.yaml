@@ -46,8 +46,6 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
         MOVIEDB_API_KEY: ${{ secrets.MOVIEDB_API_KEY }}
       run: |
-        mkdir -p key
-        echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }} > key/serviceAccountKey.json
         gcloud run deploy $IMAGE_NAME \
           --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest \
           --platform managed \
