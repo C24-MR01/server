@@ -49,7 +49,7 @@ jobs:
         mkdir -p key
         echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }} > key/serviceAccountKey.json
         gcloud run deploy $IMAGE_NAME \
-          --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME:latest \
+          --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest \
           --platform managed \
           --region $REGION \
           --allow-unauthenticated \
