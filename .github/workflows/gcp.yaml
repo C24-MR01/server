@@ -50,10 +50,10 @@ jobs:
       uses: google-github-actions/deploy-cloudrun@main
       with:
         image: asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
-        service: $IMAGE_NAME
-        region: $REGION
+        service: ${{ env.IMAGE_NAME }}
+        region: ${{ env.REGION }}
         platform: managed
         allow-unauthenticated: true
         env_vars: |
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
