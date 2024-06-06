@@ -41,14 +41,20 @@ jobs:
         docker push asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
         docker push asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
 
-    - name: Deploy to Cloud Run
-      env:
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        MOVIEDB_API_KEY: ${{ secrets.MOVIEDB_API_KEY }}
+  deploy-gcr:
+    - name: Retrieve service account key from Secret Manager
       run: |
-        gcloud run deploy $IMAGE_NAME \
-          --image asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest \
-          --platform managed \
-          --region $REGION \
-          --allow-unauthenticated \
-          --set-env-vars JWT_SECRET=${{ secrets.JWT_SECRET }},MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
+        mkdir key
+        gcloud secrets versions access latest --secret=firebase-service-account-key > key/serviceAccountKey.json
+    
+    - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          image: asia-southeast2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+          service: $IMAGE_NAME
+          region: $REGION
+          platform: managed
+          allow-unauthenticated: true
+          env_vars: |
+              JWT_SECRET=${{ secrets.JWT_SECRET }}
+              MOVIEDB_API_KEY=${{ secrets.MOVIEDB_API_KEY }}
