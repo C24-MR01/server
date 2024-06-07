@@ -2,21 +2,26 @@ const bycrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository')
 const { nanoid } = require('nanoid');   
-
+const { isValidEmail } = require('../utils/validation');
+const { calculateAge } = require('../utils/ageCalculation');
 require('dotenv').config({ path: '.env' });
 
 class UserService{
-    async register(username, email, password){
+    async register(username, email, password, name, birth, gender){
+        if(!isValidEmail(email)){
+            throw new Error('Invalid email address');
+        }
         let user = await userRepository.findByEmail(email);
         if(user.length > 0){
-            throw new Error('User already exists');
+            throw new Error('Email already exists');
         }
 
         user = await userRepository.findbyUsername(username);
         if(user.length > 0){
             throw new Error('User has already taken');
         }
-
+        const birthdate = new Date(birth);
+        const age = calculateAge(birthdate, new Date(Date.now()));
         const hashedPassword = await bycrpt.hash(password, 10);
         const id = nanoid(10);
         const userToCreate = {
@@ -24,10 +29,14 @@ class UserService{
             email,
             password: hashedPassword,
             username,
+            name,
+            birthdate,
+            age,
+            gender,
             likes: [],
             following: [],
-            createdAt: Date.now(),
-            updatedAt: Date.now()
+            createdAt: new Date(Date.now()),
+            updatedAt: new Date(Date.now())
         };
         await userRepository.create(userToCreate);
     }

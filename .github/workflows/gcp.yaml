@@ -43,8 +43,8 @@ jobs:
 
     - name: Retrieve service account key from Secret Manager
       run: |
-        mkdir key
-        gcloud secrets versions access latest --secret=firebase-service-account-key > key/serviceAccountKey.json
+        mkdir -p /usr/src/app/key
+        gcloud secrets versions access latest --secret=firebase-service-account-key > /usr/src/app/key/serviceAccountKey.json
     
     - name: Deploy to Cloud Run
       run: |
