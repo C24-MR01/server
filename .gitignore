@@ -1,3 +1,3 @@
 node_modules
 .env
-key
+# key TODO: Uncomment the following line if the repo go public -> delete key with id ff484bc081070c73ce2c29fa3f6ef97641c83e8d on firebase service account
