@@ -45,9 +45,7 @@ const unlike = async (req, res) => {
     try {
         const user = req.user;
         const { movieId } = req.params;
-
         await userRepository.removeLike(user[0].id, movieId);
-
         res.status(200).json({ message: 'Movie unliked successfully' });
     } catch (e) {
         console.error('Error unliking movie:', e);

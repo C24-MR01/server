@@ -28,19 +28,18 @@ class UserRepository{
     }
 
     async addLike(userId, movieId) {
-        const userRef = await db.collection('users').doc(userId);
+        const userRef = db.collection('users').doc(userId);
         await userRef.update({
             likes: FieldValue.arrayUnion(movieId)
         });
     }
 
     async removeLike(userId, movieId) {
-        const userRef = await db.collection('users').doc(userId);
+        const userRef = db.collection('users').doc(userId);
         await userRef.update({
             likes: FieldValue.arrayRemove(movieId)
         });
     }
-
 
     async addFriend(currentUserId, userId){
         const userRef = await db.collection('users').doc(currentUserId);
