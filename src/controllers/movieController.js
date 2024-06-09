@@ -53,6 +53,19 @@ const unlike = async (req, res) => {
     }
 };
 
+const getRating = async (req, res) => {
+    try {
+        const { movieId } = req.params;
+        const movieRef = await db.collection('movies').doc(movieId).get();
+        const movie = movieRef.data();
+
+        return res.status(200).json(movie);
+    } catch (e) {
+        console.error('Error unliking movie:', e);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 const rate = async (req, res) => {
     try {
         const user = req.user;
@@ -126,6 +139,7 @@ module.exports = {
     getMovie,
     like,
     unlike,
+    getRating,
     rate,
     editRate
 }
