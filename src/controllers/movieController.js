@@ -10,13 +10,47 @@ const getMovie = async (req, res) => {
         const { movieId } = req.params;
         const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
         const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
-        }
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
+            }
         };
 
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch movie data: ${response.statusText}`);
+        }
+        const movieData = await response.json();
+        res.status(200).json(movieData);
+    } catch (e) {
+        console.error('Error getting movie:', e);
+        res.status(400).json({ message: e.message });
+    }
+}
+
+const searchMovie = async (req, res) => {
+    try {
+        let { name, include_adult, language, page } = req.query;
+
+        if (!name) {
+            return res.status(400).json({ error: 'Name parameter is required and cannot be empty' });
+        }
+
+        name = name.split(' ').join("%20")
+        include_adult = include_adult === undefined ? "false" : include_adult === "true";
+        language = language || 'en-US';
+        page = page ? parseInt(page) : 1;
+
+        const url = `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=${include_adult}&language=${language}&page=${page}`;
+        
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
+            }
+        };
         const response = await fetch(url, options);
         if (!response.ok) {
             throw new Error(`Failed to fetch movie data: ${response.statusText}`);
@@ -141,5 +175,6 @@ module.exports = {
     unlike,
     getRating,
     rate,
-    editRate
+    editRate,
+    searchMovie
 }
