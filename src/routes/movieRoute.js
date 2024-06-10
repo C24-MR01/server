@@ -4,8 +4,10 @@ const movieController = require('../controllers/movieController');
 const router = express.Router();
 
 router.get('/:movieId', movieController.getMovie);
-router.put('/:movieId/like', movieController.like);
-router.put('/:movieId/unlike', movieController.unlike);
+router.post('/:movieId/like', movieController.like);
+router.delete('/:movieId/like', movieController.unlike);
+router.get('/:movieId/rate', movieController.getRating);
+router.post('/:movieId/rate', movieController.rate);
+router.put('/:movieId/rate', movieController.editRate);
 
-// Example protected route
 module.exports = router;
