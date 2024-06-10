@@ -4,6 +4,7 @@ require('dotenv').config({ path: '.env' });
 
 const { db } = require('../../db');
 const Movie = require('../models/movie');
+const getGenreIdByName = require('../utils/genres');
 
 const getMovie = async (req, res) => {
     try {
@@ -36,6 +37,34 @@ const getMovie = async (req, res) => {
 
         movieData.trailerUrl = youtubeUrl;
 
+        res.status(200).json(movieData);
+    } catch (e) {
+        console.error('Error getting movie:', e);
+        res.status(400).json({ message: e.message });
+    }
+}
+
+const getMovieByGenre = async (req, res) => {
+    try {
+        let { genre, page } = req.query;
+
+        genre = await getGenreIdByName(genre);
+        page = page ? parseInt(page) : 1;
+
+        const url = `https://api.themoviedb.org/3/discover/movie?with_genres=${genre}&page=${page}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
+            }
+        };
+        
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch movie data: ${response.statusText}`);
+        }
+        const movieData = await response.json();
         res.status(200).json(movieData);
     } catch (e) {
         console.error('Error getting movie:', e);
@@ -190,5 +219,6 @@ module.exports = {
     getRating,
     rate,
     editRate,
-    searchMovie
+    searchMovie,
+    getMovieByGenre
 }
