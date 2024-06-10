@@ -77,6 +77,10 @@ class UserService{
 
         return filteredUser;
     }
+
+    async findbyUsername(email) {
+        return userRepository.findbyUsername(email);
+    }
 }
 
 module.exports = new UserService();

@@ -58,6 +58,14 @@ const getUser = async (req, res) => {
     }
 }
 
+const findUser = async (req, res) => {
+    try {
+        const { username } = req.query;
+        const users = await UserService.findbyUsername(username);
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+}
 
-
-module.exports = {register, login, addFriend, removeFriend, getUser};
+module.exports = {register, login, addFriend, removeFriend, getUser, findUser};
