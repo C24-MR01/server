@@ -11,7 +11,7 @@ class UserRepository{
     }
 
     async findbyUsername(username){
-        const querySnapshot = await db.collection('users').where('username','==',username).get();
+        const querySnapshot = await db.collection('users').where('username', '>=', username).where('username', '<', username + '\uf8ff').get();
         const user = querySnapshot.docs.map(doc => doc.data());
         return user;
     }
