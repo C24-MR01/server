@@ -9,6 +9,7 @@ const getMovie = async (req, res) => {
     try {
         const { movieId } = req.params;
         const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+        const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`;
         const options = {
             method: 'GET',
             headers: {
@@ -21,7 +22,20 @@ const getMovie = async (req, res) => {
         if (!response.ok) {
             throw new Error(`Failed to fetch movie data: ${response.statusText}`);
         }
+
+        const trailerResponse = await fetch(trailerUrl, options);
+        if (!trailerResponse.ok) {
+            throw new Error(`Failed to fetch movie videos: ${trailerResponse.statusText}`);
+        }
+
+        const trailerData = await trailerResponse.json();
         const movieData = await response.json();
+
+        const trailer = trailerData.results.find(video => video.site === 'YouTube' && video.type === 'Trailer');
+        const youtubeUrl = trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null;
+
+        movieData.trailerUrl = youtubeUrl;
+
         res.status(200).json(movieData);
     } catch (e) {
         console.error('Error getting movie:', e);
