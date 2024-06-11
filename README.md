@@ -120,7 +120,7 @@
 #### Get Movie with List of Ids
 
 ```http
-  GET /api/v1/id
+  POST /api/v1/id
 ```
 
 ##### Request
@@ -421,7 +421,7 @@
 #### Update Movie's Rate
 
 ```http
-  POST /api/v1/movie/id/:movieId/rate
+  PUT /api/v1/movie/id/:movieId/rate
 ```
 
 | Parameter | Type     | Description                |
