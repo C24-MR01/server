@@ -6,6 +6,39 @@ const { db } = require('../../db');
 const Movie = require('../models/movie');
 const getGenreIdByName = require('../utils/genres');
 
+const getMoviesWithList = async (req, res) => {
+    try {
+        const { movieIds } = req.body;
+        
+        if (!Array.isArray(movieIds)) {
+            return res.status(400).json({ error: 'movieIds should be an array' });
+        }
+
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
+            }
+        };
+        const moviePromises = movieIds.map(movieId => 
+            fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error fetching movie with ID ${id}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+        );
+
+        const responses = await Promise.all(moviePromises);
+        return res.status(200).json({ movies: responses });
+    } catch (e) {
+        console.error('Error fetching movies:', e);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 const getMovie = async (req, res) => {
     try {
         const { movieId } = req.params;
@@ -218,7 +251,8 @@ const editRate = async (req, res) => {
     }
 }
 
-module.exports = { 
+module.exports = {
+    getMoviesWithList, 
     getMovie,
     like,
     unlike,

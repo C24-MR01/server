@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/', movieController.searchMovie);
 router.get('/genre', movieController.getMovieByGenre);
+router.get('/id', movieController.getMoviesWithList);
 router.get('/id/:movieId', movieController.getMovie);
 router.post('/id/:movieId/like', movieController.like);
 router.delete('/id/:movieId/like', movieController.unlike);
