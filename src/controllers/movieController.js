@@ -32,7 +32,7 @@ const getMoviesWithList = async (req, res) => {
         );
 
         const responses = await Promise.all(moviePromises);
-        return res.status(200).json(responses);
+        return res.status(200).json({ movies: responses });
     } catch (e) {
         console.error('Error fetching movies:', e);
         res.status(500).json({ error: 'Internal Server Error' });

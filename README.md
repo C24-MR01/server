@@ -117,6 +117,41 @@
     ]
 }
 ```
+#### Get Movie with List of Ids
+
+```http
+  GET /api/v1/id
+```
+
+##### Request
+```javascript
+{
+   "movieIds": ["654", "655"]
+}
+```
+##### Response
+```javascript
+{
+    "movies": [
+        {
+            "adult": false,
+            "backdrop_path": "/pxkQAIhC7LXN5s5B23lnvCMgva5.jpg",
+            "belongs_to_collection": null,
+            "budget": 910000,
+            "id": 654,
+            .....
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/moTOuNKnM2phZCYPF49Y1Hb7WJj.jpg",
+            "belongs_to_collection": null,
+            "budget": 1750000,
+            "id": 655,
+            .....
+        }
+    ]
+}
+```
 
 #### Get Movies by Genre
 
