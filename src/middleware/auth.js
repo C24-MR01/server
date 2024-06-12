@@ -1,11 +1,17 @@
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository');
+const blacklistRepository = require('../repositories/blacklistRepository');
 
 require('dotenv').config({ path: '.env' });
 
 const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const isBlacklisted = await blacklistRepository.findToken(authHeader.split(' ')[1]);
+    if(isBlacklisted){
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
