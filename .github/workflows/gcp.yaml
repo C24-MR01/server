@@ -28,15 +28,14 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
 
     - name: Download and Decrypt Service Account JSON
-        run: |
-          gsutil cp $ENCRYPTED_JSON_FILE ./serviceAccountKey.json.enc
-
-          gcloud kms decrypt \
-            --location=$REGION \
-            --keyring=$KMS_KEYRING \
-            --key=$KMS_KEY \
-            --ciphertext-file=./serviceAccountKey.json.enc \
-            --plaintext-file=./key/serviceAccountKey.json
+      run: |
+        gsutil cp $ENCRYPTED_JSON_FILE ./serviceAccountKey.json.enc
+        gcloud kms decrypt \
+          --location=$REGION \
+          --keyring=$KMS_KEYRING \
+          --key=$KMS_KEY \
+          --ciphertext-file=./serviceAccountKey.json.enc \
+          --plaintext-file=./key/serviceAccountKey.json
 
     - name: Build Docker Image
       run: |
