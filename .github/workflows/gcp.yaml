@@ -11,6 +11,9 @@ jobs:
       IMAGE_NAME: c24-mr01-server
       PROJECT_ID: c24mr01-movie-rec
       REGION: asia-southeast2
+      KMS_KEYRING: service-account-key
+      KMS_KEY: firebase-service-account
+      ENCRYPTED_JSON_FILE: gs://c24-mr01-kms/serviceAccountKey.json.enc
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -23,6 +26,17 @@ jobs:
 
     - name: Set up Cloud SDK
       uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: Download and Decrypt Service Account JSON
+        run: |
+          gsutil cp $ENCRYPTED_JSON_FILE ./serviceAccountKey.json.enc
+
+          gcloud kms decrypt \
+            --location=$REGION \
+            --keyring=$KMS_KEYRING \
+            --key=$KMS_KEY \
+            --ciphertext-file=./serviceAccountKey.json.enc \
+            --plaintext-file=./key/serviceAccountKey.json
 
     - name: Build Docker Image
       run: |
