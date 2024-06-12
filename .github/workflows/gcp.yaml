@@ -30,6 +30,7 @@ jobs:
     - name: Download and Decrypt Service Account JSON
         run: |
           gsutil cp $ENCRYPTED_JSON_FILE ./serviceAccountKey.json.enc
+
           gcloud kms decrypt \
             --location=$REGION \
             --keyring=$KMS_KEYRING \
