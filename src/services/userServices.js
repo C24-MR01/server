@@ -51,8 +51,7 @@ class UserService{
             throw new Error('Invalid password');
         }
         const token = jwt.sign({email: user[0].email}, process.env.JWT_SECRET, {expiresIn: '2h'});
-        console.log(token);
-        return token;
+        return { userId: user[0].id, token };
     }
 
     async addFriend(currentUserId, userId){
