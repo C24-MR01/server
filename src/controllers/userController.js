@@ -1,4 +1,5 @@
 const UserService = require('../services/userServices');
+const blacklistRepository = require('../repositories/blacklistRepository');
 
 const register = async (req, res) => {
     try{
@@ -23,6 +24,17 @@ const login = async (req, res) => {
         res.json(token);
       } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+}
+const logout = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+
+        //add token to blacklist
+        await blacklistRepository.create(token);
+        res.json({ message: 'Logout success' })
+    } catch (error){
+        res.json({ message: error.message })
     }
 }
 
@@ -68,4 +80,4 @@ const findUser = async (req, res) => {
     }
 }
 
-module.exports = {register, login, addFriend, removeFriend, getUser, findUser};
+module.exports = {register, login, addFriend, removeFriend, getUser, findUser, logout};
