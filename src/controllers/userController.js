@@ -54,6 +54,8 @@ const removeFriend = async (req, res) => {
         const user = req.user;
         const {userId} = req.params;
         await UserService.removeFriend(user[0].id, userId);
+        res.json({ message: 'Friend removed successfully' })
+
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
