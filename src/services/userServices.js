@@ -50,7 +50,7 @@ class UserService{
         if(!isValidPassword){
             throw new Error('Invalid password');
         }
-        const token = jwt.sign({email: user[0].email}, process.env.JWT_SECRET, {expiresIn: '2h'});
+        const token = jwt.sign({email: user[0].email}, process.env.JWT_SECRET);
         return { userId: user[0].id, token };
     }
 
@@ -69,16 +69,27 @@ class UserService{
         }
         const filteredUser = {
             id: user[0].id,
+            name: user[0].name,
             username: user[0].username,
             likes: user[0].likes,
-            following: user[0].following
+            following: user[0].following,
         };
 
         return filteredUser;
     }
 
     async findbyUsername(email) {
-        return userRepository.findbyUsername(email);
+        const users = await userRepository.findbyUsername(email);
+        const filteredUsers = users.map(user => ({
+            id: user.id,
+            name: user.name,
+            username: user.username,
+            likes: user.likes,
+            following: user.following,
+        }));
+
+        return filteredUsers;
+
     }
 }
 
