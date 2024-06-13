@@ -74,7 +74,7 @@
 #### Follow Friend
 
 ```http
-  PUT /api/v1/:userId/friend
+  PUT /api/v1/user/:userId/friend
 ```
 
 | Parameter | Type     |           
@@ -100,7 +100,7 @@
 #### Delete Friend
 
 ```http
-  DELETE /api/v1/:userId/friend
+  DELETE /api/v1/user/:userId/friend
 ```
 
 | Parameter | Type     |           
