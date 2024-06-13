@@ -120,7 +120,7 @@
 #### Get Movie with List of Ids
 
 ```http
-  POST /api/v1/id
+  POST /api/v1/movie/id
 ```
 
 ##### Request
