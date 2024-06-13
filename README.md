@@ -312,7 +312,26 @@
     video: false,
     vote_average: 6.493,
     vote_count: 2055,
-    trailerUrl: "https://www.youtube.com/watch?v=O2mecmDFE-Q"
+    trailerUrl: "https://www.youtube.com/watch?v=O2mecmDFE-Q",
+    credits: {
+        cast: [
+            {
+                adult: false,
+                gender: 2,
+                id: 819,
+                known_for_department: "Acting",
+                name: "Edward Norton",
+                original_name: "Edward Norton",
+                popularity: 21.174,
+                profile_path: "/5XBzD5WuTyVQZeS4VI25z2moMeY.jpg",
+                cast_id: 4,
+                character: "Narrator",
+                credit_id: "52fe4250c3a36847f80149f3",
+                order: 0
+            },
+            ...
+        ]
+    }
 }
 ```
 
