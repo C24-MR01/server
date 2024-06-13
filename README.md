@@ -164,9 +164,29 @@
             title: "Kung-fu",
             video: false,
             vote_average: 6.3,
-            vote_count: 3
+            vote_count: 3,
+            cast: [
+                {
+                    "adult": false,
+                    "gender": 1,
+                    "id": 1102676,
+                    "known_for_department": "Acting",
+                    "name": "Teresa Sawicka",
+                    "original_name": "Teresa Sawicka",
+                    "popularity": 13.796,
+                    "profile_path": "/zeHioEhaJrtAahfhRIhCervkpE0.jpg",
+                    "cast_id": 2,
+                    "character": "Irena Markowska",
+                    "credit_id": "5e89cb8bb84f940016cc0ceb",
+                    "order": 0
+                },
+                ...
+            ]
         }
-    ]
+    ],
+    total_pages: 8,
+    total_results: 155
+    
 }
 ```
 #### Get Movie with List of Ids
