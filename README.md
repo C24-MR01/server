@@ -71,6 +71,58 @@
     "token" : "${token}"
   }  
 ```
+#### Follow Friend
+
+```http
+  PUT /api/v1/user/:userId/friend
+```
+
+| Parameter | Type     |           
+| :-------- | :------- |
+| `userId` | `string` | 
+
+##### Request
+
+```javascript
+  {
+
+  }
+```
+
+##### Response
+
+```javascript
+  {
+    "message": "Friend added successfully"
+  }  
+```
+
+#### Delete Friend
+
+```http
+  DELETE /api/v1/user/:userId/friend
+```
+
+| Parameter | Type     |           
+| :-------- | :------- |
+| `userId` | `string` | 
+
+##### Request
+
+```javascript
+  {
+
+  }
+```
+
+##### Response
+
+```javascript
+  {
+    "message": "Friend removes successfully"
+  }  
+```
+
 
 #### Search Movies
 
