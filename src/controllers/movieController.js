@@ -132,7 +132,22 @@ const searchMovie = async (req, res) => {
             throw new Error(`Failed to fetch movie data: ${response.statusText}`);
         }
         const movieData = await response.json();
-        res.status(200).json(movieData);
+
+        const moviesWithCast = await Promise.all(
+            movieData.results.map(async (movie) => {
+                const creditsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/credits`;
+                const creditsResponse = await fetch(creditsUrl, options);
+
+                if (!creditsResponse.ok) {
+                    throw new Error(`Failed to fetch credits for movie ID ${movie.id}: ${creditsResponse.statusText}`);
+                }
+
+                const creditsData = await creditsResponse.json();
+                return { ...movie, cast: creditsData.cast };
+            })
+        );
+
+        res.status(200).json({ ...movieData, results: moviesWithCast });
     } catch (e) {
         console.error('Error getting movie:', e);
         res.status(400).json({ message: e.message });

@@ -47,7 +47,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        bash ./scripts/git_update.sh -v minor
+        bash ./scripts/git_update.sh -v patch
 
     - name: Configure Docker Client
       run : |-
