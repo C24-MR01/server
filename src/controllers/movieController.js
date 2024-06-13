@@ -77,6 +77,37 @@ const getMovie = async (req, res) => {
     }
 }
 
+const getRecentMovies = async (req, res) => {
+    try {
+        let type = req.query.type || 'now_playing';
+        let page = req.query.page || 1
+        const validTypes = ['popular', 'upcoming', 'now_playing'];
+
+        if (!validTypes.includes(type)) {
+            return res.status(400).json({ message: 'Invalid type parameter. Valid types are popular, upcoming, nowplaying.' });
+        }
+
+        const url = `https://api.themoviedb.org/3/movie/${type}?language=en-US&page=${page}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.MOVIEDB_API_KEY}`
+            }
+        };
+        
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch movie data: ${response.statusText}`);
+        }
+        const movieData = await response.json();
+        res.status(200).json(movieData);
+    } catch (e) {
+        console.error('Error getting movie:', e);
+        res.status(400).json({ message: e.message });
+    }
+}
+
 const getMovieByGenre = async (req, res) => {
     try {
         let { genre, page } = req.query;
@@ -269,6 +300,7 @@ const editRate = async (req, res) => {
 module.exports = {
     getMoviesWithList, 
     getMovie,
+    getRecentMovies,
     like,
     unlike,
     getRating,

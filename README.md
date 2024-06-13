@@ -335,6 +335,60 @@
 }
 ```
 
+#### Get Recent Movies
+
+```http
+  GET /api/v1/movie/recent?type=now_playing&&page=1
+```
+
+| Query | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `type` | `string` | **Required**. type: popular or now_playing or upcoming |
+
+##### Request
+```javascript
+{
+
+}
+```
+##### Response
+
+Note: type=popular doesn't have dates object, only {page, results, total_pages, total_results}
+```javascript
+  {
+    "dates": {
+        "maximum": "2024-06-19",
+        "minimum": "2024-05-08"
+    },
+    "page": 1,
+    "results": [
+      {
+          "adult": false,
+          "backdrop_path": "/fqv8v6AycXKsivp1T5yKtLbGXce.jpg",
+          "genre_ids": [
+              878,
+              12,
+              28
+          ],
+          "id": 653346,
+          "original_language": "en",
+          "original_title": "Kingdom of the Planet of the Apes",
+          "overview": "Several generations in the future following Caesar's reign, apes are now the dominant species and live harmoniously while humans have been reduced to living in the shadows. As a new tyrannical ape leader builds his empire, one young ape undertakes a harrowing journey that will cause him to question all that he has known about the past and to make choices that will define a future for apes and humans alike.",
+          "popularity": 3721.151,
+          "poster_path": "/gKkl37BQuKTanygYQG1pyYgLVgf.jpg",
+          "release_date": "2024-05-08",
+          "title": "Kingdom of the Planet of the Apes",
+          "video": false,
+          "vote_average": 6.85,
+          "vote_count": 985
+      },
+      ...
+    ],
+    "total_pages": 223,
+    "total_results": 4457
+  }
+```
+
 #### Get Movie
 
 ```http
