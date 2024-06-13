@@ -71,6 +71,69 @@
     "token" : "${token}"
   }  
 ```
+
+#### Get User
+
+```http
+  GET /api/v1/user/:userId
+```
+
+| Parameter | Type     |           
+| :-------- | :------- |
+| `userId` | `string` | 
+
+##### Request
+
+```javascript
+  {
+
+  }
+```
+
+##### Response
+
+```javascript
+  {
+    "id": "xxxxxx",
+    "name": "Christiano Ronaldo",
+    "username": "ronaldo",
+    "likes": [],
+    "following": []
+  }
+```
+
+#### Search User
+
+```http
+  GET /api/v1/user?username=ronaldo
+```
+
+| Query | Type     |           
+| :-------- | :------- |
+| `username` | `string` | 
+
+##### Request
+
+```javascript
+  {
+
+  }
+```
+
+##### Response
+
+```javascript
+  [
+    {
+      "id": "xxxxxx",
+      "name": "Christiano Ronaldo",
+      "username": "ronaldo",
+      "likes": [],
+      "following": []
+    }
+  ]
+```
+
 #### Follow Friend
 
 ```http
