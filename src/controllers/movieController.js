@@ -42,7 +42,7 @@ const getMoviesWithList = async (req, res) => {
 const getMovie = async (req, res) => {
     try {
         const { movieId } = req.params;
-        const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=credits`;
         const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`;
         const options = {
             method: 'GET',
